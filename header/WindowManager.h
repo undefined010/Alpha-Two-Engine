@@ -16,6 +16,7 @@
 #define WINDOW_HEIGHT_FIXED 600
 
 #define WINDOW_TITLE "ALPHA-2"
+#define GAME_OBJECTS_LIMIT 10
 
 namespace alpha
 {

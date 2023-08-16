@@ -19,7 +19,6 @@ sf::Sprite game::TileMap::getSprite(const std::string& p , const sf::Vector2f& p
     sf::Sprite sprite_;
     sprite_.setTexture(*this->texture);
     sprite_.setPosition(pos);
-    printf("texture loaded\n");
     return sprite_;
 
 }

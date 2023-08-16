@@ -1,6 +1,8 @@
 #include "WindowManager.h"
 #include "Player.h"
 
+// todo add collosion to all game objs
+
 int main()
 {
     std::unique_ptr<alpha::Window> window = std::make_unique<alpha::Window>(800, 600 , "Window Ahmad" , 60.f);
@@ -10,7 +12,7 @@ int main()
     p1->setMovement(true);
     p1->setPlayerPos(sf::Vector2f(0.f , 300.f));
 
-    Player* p2 = new Player(sf::Vector2f(0.f , 400.f) , "/Users/ahmadodeh/Alpha-Two-Engine/assest/player.png");
+    Player* p2 = new Player(sf::Vector2f(0.f , 200.f) , "/Users/ahmadodeh/Alpha-Two-Engine/assest/player.png");
     
 
     window->mouseEventHandler([&](){

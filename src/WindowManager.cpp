@@ -19,10 +19,16 @@ alpha::Window::~Window()
 {
     if (this->objects.size() == 0) return;
 
+    size_t obj_size = this->objects.size();
+
+    
     for (auto i : this->objects)
         delete i;
     
     this->objects.clear();
+    this->mouseEvents.clear();
+
+    fprintf(stdout, "deleted %lu objects\n" ,obj_size);
 }
 
 sf::RenderWindow& alpha::Window::getMainWindow()
@@ -64,8 +70,12 @@ void alpha::Window::addGameObjects(game::Object* gameObj)
 
     if (gameObj == nullptr)
         return;
+    
+    if (this->objects.size() < GAME_OBJECTS_LIMIT)
+    {
+        this->objects.push_back(gameObj);
+    }
 
-    this->objects.push_back(gameObj);
 }
 
 void alpha::Window::clearObjects()

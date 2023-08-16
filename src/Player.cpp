@@ -22,6 +22,12 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 Player::~Player()
 {
     // printf("destroied player\n");
+    this->player_events.clear();
+}
+
+void Player::addPlayerEvents(const std::function<void()>& f)
+{
+    this->player_events.push_back(f);
 }
 
 void Player::setMovement(bool arg)
@@ -70,6 +76,12 @@ void Player::update()
     {
         this->move_keyboard();
     }
+
+    for (const auto& pl_events : this->player_events)
+    {
+        pl_events();
+    }
+
     this->sprite.setPosition(this->player_pos);
 }
 
