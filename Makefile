@@ -1,4 +1,4 @@
-CXX = clang++ -Wall -Wextra -std=c++17
+CXX = clang++ -Wall -Wextra -Werror -std=c++17
 
 SRC = ./src/*.cpp
 HEADERS = -I ./header
