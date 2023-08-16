@@ -105,7 +105,7 @@ void alpha::Window::mouseEventHandler(const std::function<void()>& f)
 void alpha::Window::renderAll()
 {
     this->windowRenderer->clear(sf::Color::White);
-    this->mm.set_map(*this->windowRenderer);
+
     for (auto& i : this->objects)
     {
        i->render(*this->windowRenderer);

@@ -3,14 +3,15 @@
 
 #include <vector>
 #include <utility>
-#include <SFML/Graphics.hpp>
+
+#include "GameObjs.h"
 
 #define WIDTH_  800
 #define HEIGHT_ 600
 
 namespace game
 {
-    class TileMap
+    class TileMap : public game::Object
     {
         private:
             std::vector<std::pair<std::string,sf::Sprite>> sprites_data_vec;
@@ -26,6 +27,10 @@ namespace game
         public:
             TileMap();
             ~TileMap();
+
+        public:
+            void render(sf::RenderWindow& window);
+            void update();
     };
 }
 

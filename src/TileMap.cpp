@@ -28,6 +28,8 @@ const std::vector<std::pair<std::string,sf::Sprite>> game::TileMap::getSpritesDa
     return this->sprites_data_vec;
 }
 
+
+
 void game::TileMap::set_map(sf::RenderWindow& window)
 {
     float py = 0.f;
@@ -67,5 +69,14 @@ void game::TileMap::set_map(sf::RenderWindow& window)
         
     }
 
+}
+
+void game::TileMap::update()
+{
+}
+
+void game::TileMap::render(sf::RenderWindow& window)
+{
+    this->set_map(window);
 }
 

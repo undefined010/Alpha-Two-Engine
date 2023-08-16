@@ -2,9 +2,6 @@
 #define WINDOW_MANAGER_H
 
 #include "GameObjs.h"
-#include "TileMap.h"
-
-#include <SFML/Graphics.hpp>
 
 #include <memory>
 #include <vector>
@@ -30,7 +27,6 @@ namespace alpha
             std::unique_ptr<sf::Event> windowEvent;
             sf::Vector2u size;
             sf::Clock cl;
-            game::TileMap mm;
 
         public:
             sf::RenderWindow& getMainWindow();
