@@ -34,7 +34,7 @@ alpha::Window::~Window()
 
 sf::RenderWindow& alpha::Window::getMainWindow()
 {
-    if (this->windowRenderer.get() == nullptr) exit(EXIT_FAILURE); // will be removed later
+    if (this->windowRenderer.get() == nullptr) exit(EXIT_FAILURE); 
 
     return *this->windowRenderer;
 
@@ -123,7 +123,6 @@ void alpha::Window::updateAll()
 {
     if (this->cl.getElapsedTime().asSeconds() >= 1.0f / FPS)
     {
-        // testing handlers 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) for (const auto& m : this->mouseEvents) m();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) for (const auto& k : this->keyBoardEvents) k();
 
@@ -152,7 +151,6 @@ void alpha::Window::run()
         }
 
         this->updateAll();
-        //this->removeGameObjects();
         this->renderAll();
         
     }

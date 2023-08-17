@@ -8,12 +8,12 @@ Player::Player()
 Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 {
     this->texture = new sf::Texture();
-    this->player_pos = (pos_.x >= 0.f || pos_.y >= 0.f) ? pos_ : sf::Vector2f(X_PLAYER , Y_PLAYER); // makes sure there are no negative values
+    this->player_pos = (pos_.x >= 0.f || pos_.y >= 0.f) ? pos_ : sf::Vector2f(X_PLAYER , Y_PLAYER); 
 
     this->isMoveable = false;
     this->player_speed = 0.05f;
 
-    if (!this->texture->loadFromFile(textureFilePath)) printf("shit\n");
+    if (!this->texture->loadFromFile(textureFilePath)) printf("faild to load player texture\n");
 
     this->sprite.setPosition(this->player_pos);
     this->sprite.setTexture(*this->texture);
@@ -21,7 +21,6 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 
 Player::~Player()
 {
-    // printf("destroied player\n");
     this->player_events.clear();
 }
 

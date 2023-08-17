@@ -4,20 +4,16 @@
 
 int main()
 {
-    // window
     std::unique_ptr<alpha::Window> window = std::make_unique<alpha::Window>(800, 600 , "Window Ahmad" , 60.f);
     window->setWindowPos(sf::Vector2i(0 , 0));
     
-    // player
     Player* p1 = new Player(sf::Vector2f(0.f , 300.f) , "assest/player.png");
     p1->setMovement(true);
 
     Player* p2 = new Player(sf::Vector2f(200.f , 300.f) , "assest/player.png");
     
-    // tile map
     game::TileMap* mm = new game::TileMap();
 
-    // window and player events
     int counter = 0;
     window->onLeftClick([&](){
         p2->setMovement(++counter % 2);
