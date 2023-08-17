@@ -10,6 +10,7 @@ game::TileMap::TileMap()
 game::TileMap::~TileMap()
 {
     delete this->texture;
+    this->sprites_data_vec.clear();
 }
 
 sf::Sprite game::TileMap::getSprite(const std::string& p , const sf::Vector2f& pos)
@@ -53,14 +54,14 @@ void game::TileMap::set_map(sf::RenderWindow& window)
         for (unsigned long k = 0 ; k < arr.at(i).size() ; ++k) {
 
             if (arr.at(i).at(k) == 1){
-                this->sprites_data_vec.push_back(std::make_pair("grass" , this->getSprite("/Users/ahmadodeh/Alpha-Two-Engine/assest/grass_background.png",sf::Vector2f(px,py))));
-                window.draw(this->getSprite("/Users/ahmadodeh/Alpha-Two-Engine/assest/grass_background.png",sf::Vector2f(px,py)));
+                this->sprites_data_vec.push_back(std::make_pair("grass" , this->getSprite("assest/grass_background.png",sf::Vector2f(px,py))));
+                window.draw(this->getSprite("assest/grass_background.png",sf::Vector2f(px,py)));
 
             }
             
             if (arr[i][k] == 3) {
-                this->sprites_data_vec.push_back(std::make_pair("dirt" , this->getSprite("/Users/ahmadodeh/Alpha-Two-Engine/assest/dirt_background.png",sf::Vector2f(px,py))));
-                window.draw(this->getSprite("/Users/ahmadodeh/Alpha-Two-Engine/assest/dirt_background.png",sf::Vector2f(px,py)));
+                this->sprites_data_vec.push_back(std::make_pair("dirt" , this->getSprite("assest/dirt_background.png",sf::Vector2f(px,py))));
+                window.draw(this->getSprite("assest/dirt_background.png",sf::Vector2f(px,py)));
 
             }
 

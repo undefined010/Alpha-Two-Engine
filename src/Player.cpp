@@ -76,7 +76,6 @@ void Player::update()
     {
         this->move_keyboard();
     }
-
     for (const auto& pl_events : this->player_events)
     {
         pl_events();

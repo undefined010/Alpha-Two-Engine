@@ -7,7 +7,7 @@
 #include <vector>
 #include <functional>
 
-#define FPS_ 60
+#define FPS_ 60.f
 
 #define WINDOW_WIDTH_FIXED  800
 #define WINDOW_HEIGHT_FIXED 600
@@ -34,6 +34,7 @@ namespace alpha
         private:
             std::vector<game::Object*> objects; 
             std::vector<std::function<void()>> mouseEvents;
+            std::vector<std::function<void()>> keyBoardEvents;
 
         public:
             void addGameObjects(game::Object* gameObj);
@@ -47,10 +48,11 @@ namespace alpha
             void setWindowPos(const sf::Vector2i& p);
 
         public:
-            void mouseEventHandler(const std::function<void()>& f);
+            void onLeftClick(const std::function<void()>& f);
+            void keyboardEventHandler(const std::function<void()>& f);
 
         public:
-            void clearObjects();
+            void deleteObjects();
             void renderAll();
             void updateAll();
             void run();

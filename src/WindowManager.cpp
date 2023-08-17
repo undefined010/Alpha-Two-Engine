@@ -27,6 +27,7 @@ alpha::Window::~Window()
     
     this->objects.clear();
     this->mouseEvents.clear();
+    this->keyBoardEvents.clear();
 
     fprintf(stdout, "deleted %lu objects\n" ,obj_size);
 }
@@ -78,7 +79,7 @@ void alpha::Window::addGameObjects(game::Object* gameObj)
 
 }
 
-void alpha::Window::clearObjects()
+void alpha::Window::deleteObjects()
 {
     for (auto i : this->objects)
     {
@@ -92,14 +93,18 @@ void alpha::Window::removeGameObjects()
 {
     if (!this->objects.size()) return;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
-        this->clearObjects();
-    }
+    this->deleteObjects();
+    
 }
 
-void alpha::Window::mouseEventHandler(const std::function<void()>& f)
+void alpha::Window::onLeftClick(const std::function<void()>& f)
 {
     this->mouseEvents.push_back(f);
+}
+
+void alpha::Window::keyboardEventHandler(const std::function<void()>& f)
+{
+    this->keyBoardEvents.push_back(f);
 }
 
 void alpha::Window::renderAll()
@@ -118,7 +123,9 @@ void alpha::Window::updateAll()
 {
     if (this->cl.getElapsedTime().asSeconds() >= 1.0f / FPS)
     {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) for (auto& k : this->mouseEvents) k();
+        // testing handlers 
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) for (const auto& m : this->mouseEvents) m();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) for (const auto& k : this->keyBoardEvents) k();
 
         for (auto& i : this->objects) i->update();
     }
@@ -138,11 +145,14 @@ void alpha::Window::run()
         while (this->windowRenderer->pollEvent(*this->windowEvent))
         {
             if (this->windowEvent->type == sf::Event::Closed)
+            {
+                this->deleteObjects();
                 this->windowRenderer->close();
+            }
         }
 
         this->updateAll();
-        this->removeGameObjects();
+        //this->removeGameObjects();
         this->renderAll();
         
     }

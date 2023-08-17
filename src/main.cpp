@@ -2,8 +2,6 @@
 #include "Player.h"
 #include "TileMap.h"
 
-// todo add collosion to all game objs
-
 int main()
 {
     // window
@@ -11,18 +9,38 @@ int main()
     window->setWindowPos(sf::Vector2i(0 , 0));
     
     // player
-    Player* p1 = new Player(sf::Vector2f(0.f , 0.f) , "/Users/ahmadodeh/Alpha-Two-Engine/assest/player.png");
+    Player* p1 = new Player(sf::Vector2f(0.f , 300.f) , "assest/player.png");
     p1->setMovement(true);
-    p1->setPlayerPos(sf::Vector2f(0.f , 300.f));
 
-    Player* p2 = new Player(sf::Vector2f(0.f , 200.f) , "/Users/ahmadodeh/Alpha-Two-Engine/assest/player.png");
+    Player* p2 = new Player(sf::Vector2f(200.f , 300.f) , "assest/player.png");
     
     // tile map
     game::TileMap* mm = new game::TileMap();
 
     // window and player events
-    window->mouseEventHandler([&](){
-        p2->setPlayerPos(sf::Vector2f((float) sf::Mouse::getPosition(window->getMainWindow()).x - p2->getPlayerBounds().x / 2.f, (float) sf::Mouse::getPosition(window->getMainWindow()).y - p2->getPlayerBounds().y / 2.f));
+    int counter = 0;
+    window->onLeftClick([&](){
+        p2->setMovement(++counter % 2);
+
+        if (counter == 1000) counter = 0;
+    });
+
+    p1->addPlayerEvents([&](){
+        if (p1->getPlayerPos().y <= 0.f) p1->setPlayerPos(sf::Vector2f{p1->getPlayerPos().x , 0.f});
+        if (p1->getPlayerPos().x <= 0.f) p1->setPlayerPos(sf::Vector2f{0.f , p1->getPlayerPos().y});
+
+        if (p1->getPlayerPos().x + 100.f >= 800.f) p1->setPlayerPos(sf::Vector2f{700.f , p1->getPlayerPos().y});
+        if (p1->getPlayerPos().y + 100.f >= 600.f) p1->setPlayerPos(sf::Vector2f{p1->getPlayerPos().x, 500.f});
+
+
+    });
+
+    p2->addPlayerEvents([&](){
+        if (p2->getPlayerPos().y <= 0.f) p2->setPlayerPos(sf::Vector2f{p2->getPlayerPos().x , 0.f});
+        if (p2->getPlayerPos().x <= 0.f) p2->setPlayerPos(sf::Vector2f{0.f , p2->getPlayerPos().y});
+
+        if (p2->getPlayerPos().x + 100.f >= 800.f) p2->setPlayerPos(sf::Vector2f{700.f , p2->getPlayerPos().y});
+        if (p2->getPlayerPos().y + 100.f >= 600.f) p2->setPlayerPos(sf::Vector2f{p2->getPlayerPos().x, 400.f});
     });
 
     window->addGameObjects(mm);
