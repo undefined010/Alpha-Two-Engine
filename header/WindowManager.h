@@ -25,36 +25,26 @@ namespace alpha
         private:
             std::unique_ptr<sf::RenderWindow> windowRenderer;
             std::unique_ptr<sf::Event> windowEvent;
+            std::vector<game::Object*> objects; 
             sf::Vector2u size;
             sf::Clock cl;
 
+        private:
+            void processEvents();
+
         public:
             sf::RenderWindow& getMainWindow();
-
-        private:
-            std::vector<game::Object*> objects; 
-            std::vector<std::function<void()>> mouseEvents;
-            std::vector<std::function<void()>> keyBoardEvents;
-
-        public:
             void addGameObjects(game::Object* gameObj);
-            void removeGameObjects();
-            std::vector<game::Object*> getGameObjects;
-
-        public:
+            std::vector<game::Object*> getGameObjects();
             float getWindowFrameRate() const;
             void setWindowFrameRate(float f);
             sf::Vector2i getWindowPos() const ; 
             void setWindowPos(const sf::Vector2i& p);
 
         public:
-            void onLeftClick(const std::function<void()>& f);
-            void keyboardEventHandler(const std::function<void()>& f);
-
-        public:
             void deleteObjects();
             void renderAll();
-            void updateAll();
+            void updateAll(float deltaTime);
             void run();
             void end();
 

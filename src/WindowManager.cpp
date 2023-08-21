@@ -1,5 +1,11 @@
 #include "WindowManager.h"
 
+#define DEBUG_
+
+#ifdef DEBUG_
+#define LOG(X) fprintf(stdout,"FPS : %0.8f\n",X)
+#endif
+
 alpha::Window::Window()
 {
     this->windowRenderer = std::make_unique<sf::RenderWindow>(sf::VideoMode(WINDOW_WIDTH_FIXED , WINDOW_HEIGHT_FIXED) , WINDOW_TITLE);
@@ -26,8 +32,6 @@ alpha::Window::~Window()
         delete i;
     
     this->objects.clear();
-    this->mouseEvents.clear();
-    this->keyBoardEvents.clear();
 
     fprintf(stdout, "deleted %lu objects\n" ,obj_size);
 }
@@ -89,22 +93,17 @@ void alpha::Window::deleteObjects()
     this->objects.clear();
 }
 
-void alpha::Window::removeGameObjects()
+void alpha::Window::processEvents()
 {
-    if (!this->objects.size()) return;
+    while (this->windowRenderer->pollEvent(*this->windowEvent)) 
+    {
 
-    this->deleteObjects();
-    
-}
-
-void alpha::Window::onLeftClick(const std::function<void()>& f)
-{
-    this->mouseEvents.push_back(f);
-}
-
-void alpha::Window::keyboardEventHandler(const std::function<void()>& f)
-{
-    this->keyBoardEvents.push_back(f);
+        if (this->windowEvent->type == sf::Event::Closed) 
+        {
+            this->deleteObjects();
+            this->windowRenderer->close();
+        }
+    }   
 }
 
 void alpha::Window::renderAll()
@@ -119,38 +118,34 @@ void alpha::Window::renderAll()
     this->windowRenderer->display();
 }
 
-void alpha::Window::updateAll()
+void alpha::Window::updateAll(float deltaTime)
 {
-    if (this->cl.getElapsedTime().asSeconds() >= 1.0f / FPS)
-    {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) for (const auto& m : this->mouseEvents) m();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) for (const auto& k : this->keyBoardEvents) k();
-
-        for (auto& i : this->objects) i->update();
-    }
-    else 
-    {
-        sf::Time sleepTime = sf::seconds((1.0f / FPS) - this->cl.getElapsedTime().asSeconds());
-        sleep(sleepTime);
-    }
+    for (auto& i : this->objects) i->update(deltaTime);
 }
 
 void alpha::Window::run()
 {
-    this->windowRenderer->setFramerateLimit(this->FPS >= 0.f ? this->FPS : FPS_);
+    sf::Time frameTime   = sf::seconds(1.f / this->FPS);
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
     
-    while (this->windowRenderer->isOpen())
+    while (this->windowRenderer->isOpen() )
     {
-        while (this->windowRenderer->pollEvent(*this->windowEvent))
-        {
-            if (this->windowEvent->type == sf::Event::Closed)
-            {
-                this->deleteObjects();
-                this->windowRenderer->close();
-            }
+        sf::Time deltaTime = this->cl.restart();
+        
+        timeSinceLastUpdate += deltaTime;
+
+        this->processEvents();
+
+        while (timeSinceLastUpdate > frameTime) {
+            timeSinceLastUpdate -= frameTime;
+            updateAll(deltaTime.asSeconds());
+
         }
 
-        this->updateAll();
+        this->updateAll(deltaTime.asSeconds());
+
+        LOG(timeSinceLastUpdate.asSeconds());
+
         this->renderAll();
         
     }

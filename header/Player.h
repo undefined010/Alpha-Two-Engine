@@ -5,8 +5,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include <vector>
-#include <functional>
 
 #define X_PLAYER 0.f
 #define Y_PLAYER 0.f
@@ -20,7 +18,6 @@ class Player : public game::Object
 
     private:
         float player_speed;
-        std::vector<std::function<void()>> player_events;
 
     public:
         bool isMoveable;
@@ -28,8 +25,7 @@ class Player : public game::Object
         bool getMovement();
 
     public:
-        void move_keyboard();
-        void addPlayerEvents(const std::function<void()>& function );
+        void move_keyboard(float deltaTime);
         
     public:
         const sf::Vector2f& getPlayerPos();
@@ -37,7 +33,7 @@ class Player : public game::Object
         const sf::Vector2f getPlayerBounds();
 
     public:
-        void update();
+        void update(float deltaTime);
         void render(sf::RenderWindow& window);
 
     public:

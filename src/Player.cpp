@@ -11,7 +11,7 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
     this->player_pos = (pos_.x >= 0.f || pos_.y >= 0.f) ? pos_ : sf::Vector2f(X_PLAYER , Y_PLAYER); 
 
     this->isMoveable = false;
-    this->player_speed = 0.05f;
+    this->player_speed = 150.f;
 
     if (!this->texture->loadFromFile(textureFilePath)) printf("faild to load player texture\n");
 
@@ -21,12 +21,7 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 
 Player::~Player()
 {
-    this->player_events.clear();
-}
-
-void Player::addPlayerEvents(const std::function<void()>& f)
-{
-    this->player_events.push_back(f);
+    
 }
 
 void Player::setMovement(bool arg)
@@ -54,31 +49,28 @@ void Player::setPlayerPos(const sf::Vector2f& pos)
     this->player_pos = pos;
 }
 
-void Player::move_keyboard()
+void Player::move_keyboard(float deltaTime)
 {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        this->player_pos.x += 60.f * this->player_speed;
+        this->player_pos.x +=  this->player_speed * deltaTime;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        this->player_pos.x -= 60.f * this->player_speed;
+        this->player_pos.x -= this->player_speed * deltaTime;
     }
 
 }
 
-void Player::update()
+void Player::update(float deltaTime)
 {
     if (this->isMoveable)
     {
-        this->move_keyboard();
+        this->move_keyboard(deltaTime);
     }
-    for (const auto& pl_events : this->player_events)
-    {
-        pl_events();
-    }
+
 
     this->sprite.setPosition(this->player_pos);
 }
