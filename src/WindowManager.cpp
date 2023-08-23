@@ -3,7 +3,7 @@
 #define DEBUG_
 
 #ifdef DEBUG_
-#define LOG(X) fprintf(stdout,"FPS : %0.8f\n",X)
+#define LOG(T,X) fprintf(stdout,"%s : %0.8f\n",T,X)
 #endif
 
 alpha::Window::Window()
@@ -144,9 +144,18 @@ void alpha::Window::run()
 
         this->updateAll(deltaTime.asSeconds());
 
-        LOG(timeSinceLastUpdate.asSeconds());
+        #ifdef DEBUG_
+        LOG("FPS" , 1.f / deltaTime.asSeconds());
+        #endif
 
         this->renderAll();
+
+
+        // test
+        if (timeSinceLastUpdate < frameTime) {
+            sf::sleep(frameTime - timeSinceLastUpdate);
+            timeSinceLastUpdate += frameTime;
+        }
         
     }
 }

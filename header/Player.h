@@ -3,7 +3,6 @@
 
 #include "GameObjs.h"
 
-#include <SFML/Graphics.hpp>
 #include <memory>
 
 #define X_PLAYER 0.f
@@ -17,16 +16,20 @@ class Player : public game::Object
         sf::Vector2f player_pos;
 
     private:
-        float player_speed;
+        float player_velocity;
+
+
 
     public:
         bool isMoveable;
+        void setPlayerVelo(const float &velo);
         void setMovement(bool arg);
         bool getMovement();
 
     public:
         void move_keyboard(float deltaTime);
-        
+        void collide(sf::RenderWindow &window);
+
     public:
         const sf::Vector2f& getPlayerPos();
         void setPlayerPos(const sf::Vector2f& pos_);

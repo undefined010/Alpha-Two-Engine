@@ -11,7 +11,7 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
     this->player_pos = (pos_.x >= 0.f || pos_.y >= 0.f) ? pos_ : sf::Vector2f(X_PLAYER , Y_PLAYER); 
 
     this->isMoveable = false;
-    this->player_speed = 150.f;
+    this->player_velocity = 150.f;
 
     if (!this->texture->loadFromFile(textureFilePath)) printf("faild to load player texture\n");
 
@@ -49,17 +49,46 @@ void Player::setPlayerPos(const sf::Vector2f& pos)
     this->player_pos = pos;
 }
 
+void Player::setPlayerVelo(const float &velo) 
+{
+    this->player_velocity = velo;
+}
+
+void Player::collide(sf::RenderWindow &window) 
+{
+    if (this->player_pos.x <= 0.f){
+        this->player_pos.x = 0.f;
+
+    }
+    
+    if (this->player_pos.y <= 0.f){
+        this->player_pos.y = 0.f;
+
+    }
+
+    if (this->player_pos.x + this->sprite.getGlobalBounds().width >= window.getSize().x){
+        this->player_pos.x = window.getSize().x - this->sprite.getGlobalBounds().width;
+
+    }
+
+    if (this->player_pos.y + this->sprite.getGlobalBounds().height >= window.getSize().y) {
+        this->player_pos.y = window.getSize().y - this->sprite.getGlobalBounds().height;
+    
+    }
+    this->sprite.setPosition(this->player_pos);
+}
+
 void Player::move_keyboard(float deltaTime)
 {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        this->player_pos.x +=  this->player_speed * deltaTime;
+        this->player_pos.x +=  this->player_velocity * deltaTime;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        this->player_pos.x -= this->player_speed * deltaTime;
+        this->player_pos.x -= this->player_velocity * deltaTime;
     }
 
 }
@@ -71,11 +100,11 @@ void Player::update(float deltaTime)
         this->move_keyboard(deltaTime);
     }
 
-
     this->sprite.setPosition(this->player_pos);
 }
 
 void Player::render(sf::RenderWindow& window)
 {
+    this->collide(window);
     window.draw(this->sprite);
 }
