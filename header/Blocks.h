@@ -2,6 +2,7 @@
 #define BLOCKS_H_
 
 #include "GameObjs.h"
+#include <memory>
 #include <vector>
 
 
@@ -10,7 +11,7 @@ class Block : public game::Object
     private:
         std::vector<sf::Vector2f> positions;
         std::vector<sf::Sprite> sprites;
-        sf::Texture* texture;
+        std::unique_ptr<sf::Texture> texture;
         uint32_t window_width;
         uint32_t window_height;
 

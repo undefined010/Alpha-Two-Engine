@@ -7,13 +7,13 @@ Player::Player()
 
 Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 {
-    this->texture = new sf::Texture();
+    this->texture = std::make_unique<sf::Texture>();
     this->player_pos = (pos_.x >= 0.f || pos_.y >= 0.f) ? pos_ : sf::Vector2f(X_PLAYER , Y_PLAYER); 
 
     this->isMoveable = false;
     this->player_velocity = 150.f;
 
-    if (!this->texture->loadFromFile(textureFilePath)) printf("faild to load player texture\n");
+    if (!this->texture->loadFromFile(textureFilePath)) fprintf(stderr,"faild to load player texture\n");
 
     this->sprite.setPosition(this->player_pos);
     this->sprite.setTexture(*this->texture);
@@ -21,7 +21,6 @@ Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
 
 Player::~Player()
 {
-    
 }
 
 void Player::setMovement(bool arg)

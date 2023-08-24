@@ -21,6 +21,9 @@ namespace alpha
     {
         private:
             float FPS;
+            sf::Time frameTime;
+            sf::Time timeSinceLastUpdate;
+            sf::Time deltaTime;
 
         private:
             std::unique_ptr<sf::RenderWindow> windowRenderer;
@@ -35,7 +38,6 @@ namespace alpha
         public:
             sf::RenderWindow& getMainWindow();
             void addGameObjects(game::Object* gameObj);
-            std::vector<game::Object*> getGameObjects();
             float getWindowFrameRate() const;
             void setWindowFrameRate(float f);
             sf::Vector2i getWindowPos() const ; 

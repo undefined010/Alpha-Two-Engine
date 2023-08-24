@@ -1,6 +1,6 @@
 #include "WindowManager.h"
 
-#define DEBUG_
+//#define DEBUG_
 
 #ifdef DEBUG_
 #define LOG(T,X) fprintf(stdout,"%s : %0.8f\n",T,X)
@@ -23,17 +23,15 @@ alpha::Window::Window(uint16_t w , uint16_t h, const std::string& title , float 
 
 alpha::Window::~Window()
 {
-    if (this->objects.size() == 0) return;
-
-    size_t obj_size = this->objects.size();
-
-    
-    for (auto i : this->objects)
+    if (this->objects.size() == 0) {
+        return;
+    }
+ 
+    for (auto i : this->objects) {
         delete i;
+    }
     
     this->objects.clear();
-
-    fprintf(stdout, "deleted %lu objects\n" ,obj_size);
 }
 
 sf::RenderWindow& alpha::Window::getMainWindow()
@@ -89,7 +87,6 @@ void alpha::Window::deleteObjects()
     {
         delete i;
     }
-
     this->objects.clear();
 }
 
@@ -125,36 +122,36 @@ void alpha::Window::updateAll(float deltaTime)
 
 void alpha::Window::run()
 {
-    sf::Time frameTime   = sf::seconds(1.f / this->FPS);
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    this->frameTime   = sf::seconds(1.f / this->FPS);
+    this->timeSinceLastUpdate = sf::Time::Zero;
     
     while (this->windowRenderer->isOpen() )
     {
-        sf::Time deltaTime = this->cl.restart();
+        this->deltaTime = this->cl.restart();
         
-        timeSinceLastUpdate += deltaTime;
+        this->timeSinceLastUpdate += deltaTime;
 
         this->processEvents();
 
-        while (timeSinceLastUpdate > frameTime) {
-            timeSinceLastUpdate -= frameTime;
-            updateAll(deltaTime.asSeconds());
+        while (this->timeSinceLastUpdate > this->frameTime) {
+            this->timeSinceLastUpdate -= this->frameTime;
+            updateAll(this->deltaTime.asSeconds());
 
         }
 
-        this->updateAll(deltaTime.asSeconds());
+        this->updateAll(this->deltaTime.asSeconds());
 
         #ifdef DEBUG_
-        LOG("FPS" , 1.f / deltaTime.asSeconds());
+        LOG("FPS" , 1.f / this->deltaTime.asSeconds());
         #endif
 
         this->renderAll();
 
 
         // test
-        if (timeSinceLastUpdate < frameTime) {
-            sf::sleep(frameTime - timeSinceLastUpdate);
-            timeSinceLastUpdate += frameTime;
+        if (this->timeSinceLastUpdate < this->frameTime) {
+            sf::sleep(this->frameTime - this->timeSinceLastUpdate);
+            this->timeSinceLastUpdate += this->frameTime;
         }
         
     }

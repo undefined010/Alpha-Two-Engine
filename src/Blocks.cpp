@@ -1,17 +1,16 @@
 #include "Blocks.h"
 #include <iostream>
-static int c = 0;
 
 Block::Block(uint32_t w , uint32_t h) : window_width{w} , window_height{h}
 {
-    this->texture = new sf::Texture();
+    this->texture = std::make_unique<sf::Texture>();
 }
 
 Block::~Block()
 {
     this->sprites.clear();
     this->positions.clear();
-    delete texture;
+
 }
 
 void Block::create_sprites(const std::string &texture_path , const sf::Vector2f &pos_)
@@ -27,7 +26,6 @@ void Block::create_sprites(const std::string &texture_path , const sf::Vector2f 
     this->sprites.push_back(s);
     this->positions.push_back(s.getPosition());
 
-    printf("done %d\n",++c);
     return;
 }
 
@@ -37,7 +35,6 @@ void Block::set_sprite(int row , const std::string &path)
         for (int k = 0 ; k < (int)(this->window_width ); ++k) {
             if (i == row) {
                 create_sprites(path,sf::Vector2f(k * 100.f,i * 100.f));
-                printf("green\n");
             }
 
         }

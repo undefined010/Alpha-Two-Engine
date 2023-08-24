@@ -11,7 +11,7 @@
 class Player : public game::Object
 {
     private:
-        sf::Texture* texture;
+        std::unique_ptr<sf::Texture> texture;
         sf::Sprite sprite;
         sf::Vector2f player_pos;
 
