@@ -3,6 +3,7 @@
 
 Player::Player()
 {
+    this->texture = std::make_unique<sf::Texture>();
 }
 
 Player::Player(sf::Vector2f pos_ , const std::string& textureFilePath)
@@ -55,6 +56,8 @@ void Player::setPlayerVelo(const float &velo)
 
 void Player::collide(sf::RenderWindow &window) 
 {
+    if (!window.isOpen()) return;
+    
     if (this->player_pos.x <= 0.f){
         this->player_pos.x = 0.f;
 
@@ -104,6 +107,7 @@ void Player::update(float deltaTime)
 
 void Player::render(sf::RenderWindow& window)
 {
+    if (!window.isOpen()) return;
     this->collide(window);
     window.draw(this->sprite);
 }

@@ -14,19 +14,14 @@ class Player : public game::Object
         std::unique_ptr<sf::Texture> texture;
         sf::Sprite sprite;
         sf::Vector2f player_pos;
-
-    private:
         float player_velocity;
-
-
-
     public:
         bool isMoveable;
         void setPlayerVelo(const float &velo);
         void setMovement(bool arg);
         bool getMovement();
 
-    public:
+    private:
         void move_keyboard(float deltaTime);
         void collide(sf::RenderWindow &window);
 
